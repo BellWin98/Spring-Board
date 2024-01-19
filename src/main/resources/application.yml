@@ -9,8 +9,5 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show_sql: true
-  mvc:
-    path-match:
-      matching-strategy: ant_path_matcher
