@@ -11,4 +11,6 @@ public class MemberDetailsResponse {
     private String email;
     private String password;
     private String createdTime;
+    private int postCount;
+    private String role;
 }
