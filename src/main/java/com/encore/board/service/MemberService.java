@@ -80,7 +80,7 @@ public class MemberService {
     public MemberDetailsResponse showMemberDetails(Long id) throws MemberNotExistException{
         Member member = memberRepository.findById(id).orElseThrow(MemberNotExistException::new);
         String role;
-        if (member.getRole().equals(ROLE_USER)){
+        if (member.getRole() == null || member.getRole().equals(ROLE_USER)){
             role = "일반 사용자";
         } else {
             role = "관리자";
@@ -103,7 +103,7 @@ public class MemberService {
         member.updateMemberInfo(req.getPassword(), req.getNickname());
         // 명시적으로 save를 하지 않더라도 JPA의 영속성 컨텍스트를 통해,
         // 객체의 변경이 감지(Dirty Checking)되면 트랜잭션이 완료되는 시점에 save 동작.
-        // memberRepository.save(member);
+//         memberRepository.save(member);
     }
 
     public void delete(Long id){
@@ -122,6 +122,10 @@ public class MemberService {
             myPosts.add(myPostResponse);
         }
         return myPosts;
+    }
+
+    public Member circleTest(Long id){
+        return memberRepository.findById(id).orElseThrow(MemberNotExistException::new);
     }
 
     public boolean checkDuplicate(String email){

@@ -27,6 +27,7 @@ public class PostService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public void write(PostRequest req){
         Member member = memberRepository.findByEmail(req.getEmail()).orElse(null);
         Post post = Post.builder()
@@ -35,6 +36,8 @@ public class PostService {
                 .member(member)
                 .build();
 
+        // 더티 체킹 테스트 (글을 작성한 Member의 이름을 변경해보기)
+        member.updateMemberInfo("1356", "Dirty Checking Test");
         postRepository.save(post);
     }
 
@@ -51,7 +54,7 @@ public class PostService {
     }
 
     public List<PostSimpleResponse> showPostList(){
-        List<Post> posts = postRepository.findAllByOrderByCreatedTimeDesc();
+        List<Post> posts = postRepository.findAllFetchJoin();
         List<PostSimpleResponse> responses = new ArrayList<>();
         for (Post post : posts){
             PostSimpleResponse postSimpleResponse = PostSimpleResponse.builder()

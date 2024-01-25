@@ -4,6 +4,7 @@ import com.encore.board.dto.request.MemberSignUpRequest;
 import com.encore.board.dto.request.MemberUpdateRequest;
 import com.encore.board.dto.response.MemberDetailsResponse;
 import com.encore.board.dto.response.MyPostResponse;
+import com.encore.board.entity.Member;
 import com.encore.board.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +71,6 @@ public class MemberController {
         return "member/my-post";
     }
 
-
-
         // ResponseEntity<MemberDetailsResponse> 적용
 //        try {
 //            MemberDetailsResponse result = memberService.showMemberDetails(id);
@@ -81,7 +80,19 @@ public class MemberController {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        }
 
+    @GetMapping("/{id}/circle/entity")
+    @ResponseBody
+    // 연관관계가 있는 Member 엔티티를 Json으로 직렬화 하게 될 경우,
+    // 순환 참조 이슈 발생하므로, DTO 사용 필요
+    public Member circleIssueTest1(@PathVariable Long id){
+        return memberService.circleTest(id);
+    }
 
+    @GetMapping("/{id}/circle/dto")
+    @ResponseBody
+    public MemberDetailsResponse circleIssueTest2(@PathVariable Long id){
+        return memberService.showMemberDetails(id);
+    }
 
     @GetMapping("/check-duplicate")
     @ResponseBody
