@@ -8,8 +8,8 @@
 <body>
     <div th:replace="fragments/header :: headerFragment"></div>
     <div class="container">
-        <div class="page-header">
-            <h1>회원 상세 보기</h1>
+        <div class="page-header mt-3">
+            <h1>회원 가입</h1>
         </div>
         <form action="/api/members/sign-up" method="post">
             <div class="form-group">
@@ -36,9 +36,16 @@
                 <button class="btn btn-primary mt-3" type="submit">가입 완료</button>
                 <a class="btn btn-secondary mt-3" href="/">돌아가기</a>
             </div>
-
         </form>
-
     </div>
+    <div th:if="${errorMessage != null}">
+        <input type="hidden" id="error" th:value="${errorMessage}"></input>
+    </div>
+    <script>
+        let errorMessage = document.getElementById("error").value;
+        if (errorMessage){
+            alert(errorMessage);
+        }
+    </script>
 </body>
 </html>

@@ -4,6 +4,7 @@ import com.encore.board.common.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -29,6 +30,12 @@ public class Post extends BaseTimeEntity {
     @Column(length = 3000, nullable = false)
     private String contents;
 
+    @Column
+    private String appointment;
+
+    @Column
+    private LocalDateTime appointmentTime;
+
     // member_id는 DB의 컬럼명, 별도의 옵션 없을 시 member의 PK에 FK가 설정
     @JoinColumn(name = "member_id")
     // JPA에게 Author와 Post의 관계를 알려줌. Post 객체 입장에서 한 사람이 여러 개 글을 쓸 수 있으므로 N:1
@@ -39,5 +46,9 @@ public class Post extends BaseTimeEntity {
     public void updateTitleContents(String title, String contents){
         this.title = title;
         this.contents = contents;
+    }
+
+    public void updateAppointment(String appointment){
+        this.appointment = appointment;
     }
 }

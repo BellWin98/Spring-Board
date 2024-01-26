@@ -5,6 +5,7 @@ import com.encore.board.dto.request.MemberUpdateRequest;
 import com.encore.board.dto.response.MemberDetailsResponse;
 import com.encore.board.dto.response.MyPostResponse;
 import com.encore.board.entity.Member;
+import com.encore.board.exception.member.MemberEmailAlreadyExistException;
 import com.encore.board.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,14 @@ public class MemberController {
     }
 
     @PostMapping("/sign-up")
-    public String signUp(MemberSignUpRequest req){
-        memberService.signup(req);
-        return "redirect:member-list";
+    public String signUp(Model model, MemberSignUpRequest req){
+        try{
+            memberService.signup(req);
+            return "redirect:member-list";
+        } catch (MemberEmailAlreadyExistException e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/member-create";
+        }
     }
 
     @GetMapping("/member-list")
@@ -64,13 +70,11 @@ public class MemberController {
     }
 
     @GetMapping("/detail/{id}/myPosts")
-//    @ResponseBody
     public String getMyPosts(@PathVariable Long id, Model model) {
         List<MyPostResponse> result = memberService.getMyPosts(id);
         model.addAttribute("myPosts", result);
         return "member/my-post";
     }
-
         // ResponseEntity<MemberDetailsResponse> 적용
 //        try {
 //            MemberDetailsResponse result = memberService.showMemberDetails(id);

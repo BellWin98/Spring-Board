@@ -8,6 +8,7 @@ import com.encore.board.dto.response.MyPostResponse;
 import com.encore.board.entity.Member;
 import com.encore.board.entity.Post;
 import com.encore.board.entity.Role;
+import com.encore.board.exception.member.MemberEmailAlreadyExistException;
 import com.encore.board.exception.member.MemberNotExistException;
 import com.encore.board.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class MemberService {
 
     @Transactional
     public void signup(MemberSignUpRequest req){
+        if (memberRepository.findByEmail(req.getEmail()).isPresent()){
+            throw new MemberEmailAlreadyExistException();
+        }
         Role role;
         if (req.getRole().equals("admin")){
             role = Role.ROLE_ADMIN;

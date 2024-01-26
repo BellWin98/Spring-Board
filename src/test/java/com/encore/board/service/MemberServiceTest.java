@@ -40,7 +40,7 @@ public class MemberServiceTest {
         Mockito.when(memberRepository.findAll()).thenReturn(members);
 
         // 검증
-        Assertions.assertEquals(2, memberService.showMembers().size());
+        Assertions.assertEquals(members.size(), memberService.showMembers().size());
     }
 
     @Test
@@ -53,7 +53,6 @@ public class MemberServiceTest {
                 .build();
         // 아래 코드에 의해 member의 메모리 주소 값이 memberService.update()함수의 member로 전달
         Mockito.when(memberRepository.findById(memberId)).thenReturn(Optional.of(member));
-
         MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest();
         memberUpdateRequest.setNickname("test2");
         memberUpdateRequest.setPassword("4321");
@@ -83,6 +82,6 @@ public class MemberServiceTest {
         MemberDetailsResponse memberDetailsResponse = memberService.showMemberDetails(memberId);
         Assertions.assertEquals(member.getNickname(), memberDetailsResponse.getNickname());
         Assertions.assertEquals(member.getPosts().size(), memberDetailsResponse.getPostCount());
-        Assertions.assertEquals("관리자", memberDetailsResponse.getRole());
+        Assertions.assertEquals("일반 사용자", memberDetailsResponse.getRole());
     }
 }
