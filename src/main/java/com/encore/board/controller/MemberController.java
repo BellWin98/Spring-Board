@@ -39,6 +39,7 @@ public class MemberController {
             return "redirect:member-list";
         } catch (MemberEmailAlreadyExistException e){
             model.addAttribute("errorMessage", e.getMessage());
+            log.error(e.getMessage());
             return "member/member-create";
         }
     }
