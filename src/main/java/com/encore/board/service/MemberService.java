@@ -12,6 +12,7 @@ import com.encore.board.exception.member.MemberEmailAlreadyExistException;
 import com.encore.board.exception.member.MemberNotExistException;
 import com.encore.board.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,10 +26,12 @@ import static com.encore.board.entity.Role.ROLE_USER;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository){
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder){
         this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -45,7 +48,7 @@ public class MemberService {
 
         Member member = Member.builder()
                 .email(req.getEmail())
-                .password(req.getPassword())
+                .password(passwordEncoder.encode(req.getPassword()))
                 .nickname(req.getNickname())
                 .role(role)
                 .build();

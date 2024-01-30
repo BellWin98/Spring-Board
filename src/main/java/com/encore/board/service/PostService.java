@@ -29,8 +29,11 @@ public class PostService {
     }
 
     @Transactional
-    public void write(PostRequest req) throws IllegalArgumentException{
-        Member member = memberRepository.findByEmail(req.getEmail()).orElse(null);
+    public void write(PostRequest req, String email) throws IllegalArgumentException{
+        // SecurityContextHolder 계층 구조에 의거, 서비스단에서도 Authentication 객체를 가져올 수 있다.
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String email = authentication.getName();
+        Member member = memberRepository.findByEmail(email).orElse(null);
         LocalDateTime reservationTime = null;
         String appointment = null;
         if (req.getAppointment().equals("Y") && !req.getAppointmentTime().isEmpty()){

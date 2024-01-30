@@ -9,6 +9,7 @@ import com.encore.board.exception.member.MemberEmailAlreadyExistException;
 import com.encore.board.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,11 @@ public class MemberController {
         return "member/member-create";
     }
 
+    @GetMapping("/login-page")
+    public String login(){
+        return "member/login-page";
+    }
+
     @PostMapping("/sign-up")
     public String signUp(Model model, MemberSignUpRequest req){
         try{
@@ -44,6 +50,7 @@ public class MemberController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')") // 권한 검사 (관리자 권한이 아니면 조회 불가)
     @GetMapping("/member-list")
     public String memberList(Model model){
         model.addAttribute("members", memberService.showMembers());

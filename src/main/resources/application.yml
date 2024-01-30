@@ -1,4 +1,9 @@
 spring:
+  # 임시 계정 / 임시 비밀번호
+  security:
+    user:
+      name: user
+      password: 1234
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/spring_board

@@ -9,9 +9,17 @@
         <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
             <a class="navbar-brand mx-auto" href="/">게시판 서비스</a>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                    <a class="nav-link" href="/api/members/member-list">회원관리</a>
+                </li>
                 <li class="nav-item"><a class="nav-link" href="/api/members/sign-up">회원가입</a></li>
-                <li class="nav-item"><a class="nav-link" href="/api/members/member-list">회원관리</a></li>
                 <li class="nav-item" ><a class="nav-link" href="/api/posts/post-list">게시글 목록</a></li>
+                <li class="nav-item" th:if="${session.email} == null">
+                    <a class="nav-link" href="/api/members/login-page">로그인</a>
+                </li>
+                <li class="nav-item" th:if="${session.email} != null">
+                    <a class="nav-link" href="/doLogout">로그아웃</a>
+                </li>
             </ul>
         </nav>
     </div>
