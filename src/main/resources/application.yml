@@ -16,6 +16,11 @@ spring:
     hibernate:
       ddl-auto: update
     show_sql: true
+  session:
+    storage-type: redis
+  redis:
+    host: localhost
+    port: 6379
 logging:
   # 로그파일 경로와 파일명 지정
   file:
