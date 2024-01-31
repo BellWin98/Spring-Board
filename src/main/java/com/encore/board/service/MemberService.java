@@ -107,7 +107,7 @@ public class MemberService {
     @Transactional
     public void update(Long id, MemberUpdateRequest req) throws MemberNotExistException{
         Member member = memberRepository.findById(id).orElseThrow(MemberNotExistException::new);
-        member.updateMemberInfo(req.getPassword(), req.getNickname());
+        member.updateMemberInfo(passwordEncoder.encode(req.getPassword()), req.getNickname());
         // 명시적으로 save를 하지 않더라도 JPA의 영속성 컨텍스트를 통해,
         // 객체의 변경이 감지(Dirty Checking)되면 트랜잭션이 완료되는 시점에 save 동작.
 //         memberRepository.save(member);
